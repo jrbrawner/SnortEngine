@@ -13,10 +13,10 @@ def version():
         raise HTTPException(400, 'Error in executing task.')
     return result
 
-@router.get("/validate-configuration", response_class=PlainTextResponse)
-def validate_conf():
-    """Validate configuration."""
-    result = services.validate_conf()
+@router.get("/configuration", response_class=PlainTextResponse)
+def get_configuration():
+    """Get configuration."""
+    result = services.get_configuration()
     if result is None:
         raise HTTPException(400, 'Error in executing task.')
     return result
