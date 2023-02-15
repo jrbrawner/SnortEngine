@@ -1,0 +1,11 @@
+services:
+  snort:
+    build:
+      context: .
+      dockerfile: Dockerfile.snort-engine
+    image: testing-snort
+    tty: true
+    ports: 
+    - "127.0.0.1:80:80"
+    volumes:
+    - .:/code
