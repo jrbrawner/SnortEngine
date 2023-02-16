@@ -1,8 +1,6 @@
 import subprocess
-from fastapi import File
-
-#This path should correspond to the snort installation location on the docker container
-#so that snort commands can be issued easier.
+import tempfile
+from fastapi import UploadFile
 
 def get_version():
     """
@@ -20,7 +18,7 @@ def get_version():
 def get_configuration():
     """
     snort -c /usr/local/etc/snort/snort.lua
-    Get configuration 
+    Get configuration
     """
     result = subprocess.run([f'snort -c /usr/local/etc/snort/snort.lua'],
                         capture_output=True,
@@ -30,8 +28,11 @@ def get_configuration():
                         universal_newlines=True)
     return result.stdout
 
-def testing(pcap_file):
-    result = subprocess.run([f'snort -r {pcap_file}'],
+def testing(pcap_file: UploadFile):
+
+    text = pcap_file.file.read().decode()
+    print(text)
+    result = subprocess.run([f'cd /snort/pcap && echo {text} > test.pcap && ls'],
                         capture_output=True,
                         text=True,
                         encoding="utf-8",
