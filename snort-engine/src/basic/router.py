@@ -23,7 +23,6 @@ def get_configuration():
 
 @router.post("/test-pcap", response_class=PlainTextResponse)
 def testing(file: UploadFile):
-    print(file.filename)
     result = services.testing(file)
     if result is None:
         raise HTTPException(400, 'Error in executing task.')
