@@ -35,7 +35,13 @@ def analyze_pcap(pcap_file: UploadFile, rules_file: UploadFile):
         raise HTTPException(400, 'Error in executing task.')
     return result
 
-@router.get("/testing", response_class=PlainTextResponse)
-def testing():
-    result = services.testing()
+@router.post("/read-pcap-detailed", response_class=PlainTextResponse)
+def testing(pcap_file: UploadFile):
+    result = services.read_pcap_detailed(pcap_file)
     return result
+
+@router.post("/testing", response_class=PlainTextResponse)
+def testing(pcap_file: UploadFile):
+    result = services.testing(pcap_file)
+    return result
+

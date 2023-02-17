@@ -1,7 +1,7 @@
 import subprocess
 import tempfile
 from fastapi import UploadFile
-from scapy.all import rdpcap
+import time
 
 def get_version():
     """
@@ -53,22 +53,18 @@ def analyze_pcap(pcap_file: UploadFile, rules_file: UploadFile):
     """
     Have snort analyze a pcap file using a provided rules file and return the result.
     """
-
-    test_rule = """
-    alert tcp any any -> any any (msg:"TESTING";)
-    """
     temp_file_pcap = tempfile.NamedTemporaryFile()
-    #temp_file_pcap.name = 'test.pcap'
+    pcap = pcap_file.file.read()
     f = open(temp_file_pcap.name, 'wb')
-    f.write(pcap_file.file.read())
+    f.write(pcap)
     f.close()
-
+    
     temp_file_rules = tempfile.NamedTemporaryFile()
-    #temp_file_rules.name = 'test.rules'
+    rules = rules_file.file.read().decode()
     f = open(temp_file_rules.name, 'w')
-    f.write(rules_file.file.read().decode())
+    f.write(rules)
     f.close()
-
+    
     result = subprocess.run([f'snort -q -c /usr/local/etc/snort/snort.lua -R {temp_file_rules.name} -r {temp_file_pcap.name} -A alert_talos'],
                         capture_output=True,
                         text=True,
@@ -79,3 +75,26 @@ def analyze_pcap(pcap_file: UploadFile, rules_file: UploadFile):
     temp_file_rules.close()
 
     return result.stdout
+
+def read_pcap_detailed(pcap_file: UploadFile):
+    """
+    Inspect a pcap packet by packet, and return result.
+    $ snort -r a.pcap -L dump
+    """
+    temp_file_pcap = tempfile.NamedTemporaryFile()
+    f = open(temp_file_pcap.name, 'wb')
+    f.write(pcap_file.file.read())
+    f.close()
+
+    result = subprocess.run([f'snort -r {temp_file_pcap.name} -L dump'],
+                        capture_output=True,
+                        text=True,
+                        encoding="utf-8",
+                        shell=True,
+                        universal_newlines=True)
+    temp_file_pcap.close()
+    
+    return result.stdout
+
+def testing(pcap_file: UploadFile):
+    pass
