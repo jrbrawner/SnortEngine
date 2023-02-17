@@ -21,9 +21,16 @@ def get_configuration():
         raise HTTPException(400, 'Error in executing task.')
     return result
 
-@router.post("/test-pcap", response_class=PlainTextResponse)
-def testing(file: UploadFile):
-    result = services.testing(file)
+@router.post("/read-pcap", response_class=PlainTextResponse)
+def read_pcap(pcap_file: UploadFile):
+    result = services.read_pcap(pcap_file)
+    if result is None:
+        raise HTTPException(400, 'Error in executing task.')
+    return result
+
+@router.post("/analyze-pcap", response_class=PlainTextResponse)
+def analyze_pcap(pcap_file: UploadFile, rules_file: UploadFile):
+    result = services.analyze_pcap(pcap_file, rules_file)
     if result is None:
         raise HTTPException(400, 'Error in executing task.')
     return result
