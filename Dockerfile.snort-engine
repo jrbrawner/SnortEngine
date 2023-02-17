@@ -64,9 +64,9 @@ RUN mkdir conf
 
 WORKDIR /code
 
-COPY snort-engine /code/api
-
-RUN pip install --no-cache-dir --upgrade -r /code/api/requirements.txt
-
+COPY snort-engine/requirements.txt /code/snort-engine/
+RUN pip install --no-cache-dir --upgrade -r /code/snort-engine/requirements.txt
+COPY . /code/snort-engine
+ENV PYTHONPATH "${PYTHONPATH}:/code/snort-engine/"
 
 CMD ["uvicorn", "snort-engine.src.main:app", "--reload", "--host", "0.0.0.0", "--port", "80"]
