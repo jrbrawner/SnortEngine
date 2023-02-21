@@ -34,8 +34,8 @@ def analyze_pcap_detailed(pcap_file: UploadFile, rules_file: UploadFile, show_ra
     return result
 
 @router.post("/testing123", response_class=PlainTextResponse, tags=['pcap'])
-def testing():
-    result = services.testing()
+def testing(cmd: str):
+    result = services.testing(cmd)
     if result is None:
         raise HTTPException(400, 'Error in executing task.')
     return result

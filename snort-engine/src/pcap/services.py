@@ -115,15 +115,17 @@ def analyze_pcap_detailed(pcap_file: UploadFile, rules_file: UploadFile, packet_
         return result.stderr
 
 
-def testing():
+def testing(cmd:str):
     """
-    Have snort analyze a pcap file using a provided rules file, default snort configuration and return the result.
+    Experimental, allows commands to be passed through.
     """
-    result = subprocess.run([f'cd /code/snort-engine/src/testing && snort -q -r NTLM-wenchao.pcap -R test.rules -A alert_talos'],
+    result = subprocess.run([cmd],
                         capture_output=True,
                         text=True,
                         encoding="utf-8",
                         shell=True,
                         universal_newlines=True)
-    
-    return result.stdout
+    if result.stderr == "":
+        return result.stdout
+    else:
+        return result.stderr
