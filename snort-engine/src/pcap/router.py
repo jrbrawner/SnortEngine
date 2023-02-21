@@ -24,3 +24,18 @@ def analyze_pcap(pcap_file: UploadFile, rules_file: UploadFile):
     if result is None:
         raise HTTPException(400, 'Error in executing task.')
     return result
+
+@router.post("/analyze-pcap-detailed", response_class=PlainTextResponse, tags=['pcap'])
+def analyze_pcap_detailed(pcap_file: UploadFile, rules_file: UploadFile, show_raw_packet_data: bool = False):
+    """Warning: Showing all packet data will take a while to load."""
+    result = services.analyze_pcap_detailed(pcap_file, rules_file, show_raw_packet_data)
+    if result is None:
+        raise HTTPException(400, 'Error in executing task.')
+    return result
+
+@router.post("/testing123", response_class=PlainTextResponse, tags=['pcap'])
+def testing():
+    result = services.testing()
+    if result is None:
+        raise HTTPException(400, 'Error in executing task.')
+    return result
