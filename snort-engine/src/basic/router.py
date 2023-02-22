@@ -13,8 +13,8 @@ def version():
         raise HTTPException(400, 'Error in executing task.')
     return result
 
-@router.post("/testing", response_class=PlainTextResponse)
-def testing(pcap_file: UploadFile):
-    result = services.testing(pcap_file)
+@router.post("/snort2lua", response_class=PlainTextResponse)
+def testing(rule_string : str):
+    result = services.testing(rule_string)
     return result
 
