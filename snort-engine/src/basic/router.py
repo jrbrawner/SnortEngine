@@ -13,8 +13,17 @@ def version():
         raise HTTPException(400, 'Error in executing task.')
     return result
 
-@router.post("/snort2lua", response_class=PlainTextResponse)
-def testing(rule_string : str):
-    result = services.testing(rule_string)
+@router.get("/test-rule", response_class=PlainTextResponse, tags=['basic'])
+def test_rule(rule_string: str):
+    result = services.test_rule(rule_string)
+    if result is None:
+        raise HTTPException(400, 'Error in testing rule.')
+    return result
+
+@router.post("/snort2lua/convert-rule", response_class=PlainTextResponse, tags=['basic'])
+def convert_rule(rule_string : str):
+    result = services.convert_rule(rule_string)
+    if result is None:
+        raise HTTPException(400, 'Error in converting rule.')
     return result
 
