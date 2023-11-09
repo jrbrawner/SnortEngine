@@ -35,9 +35,9 @@ def create_configuration(config_name: str, HOME_NET: str, EXTERNAL_NET: str):
     """
     Create new configuration file, using default as template.
     """
-    if os.path.exists('/snort/conf/snort_default_conf.lua'):
+    if os.path.exists('/snort/conf/default_snort.lua'):
         new_file = ""
-        for line in open(f'{settings.config_folder_path}/snort_default_conf.lua').readlines():
+        for line in open(f'{settings.config_folder_path}/default_snort.lua').readlines():
             if line.strip() == "HOME_NET = 'any'":
                 line = f"HOME_NET = '{HOME_NET}'"
             if line.strip() == "EXTERNAL_NET = 'any'":
