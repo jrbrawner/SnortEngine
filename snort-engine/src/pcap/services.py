@@ -63,7 +63,7 @@ def analyze_pcap(pcap_file: UploadFile, rules_file: UploadFile):
     f.write(rules)
     f.close()
     conf_path = '/code/snort-engine/src/configuration/snort_config_files'
-    result = subprocess.run([f'snort -c {conf_path}/snort_default_conf.lua -R {temp_file_rules.name} -q -r {temp_file_pcap.name} -A alert_talos'],
+    result = subprocess.run([f'snort -c {conf_path}/default_snort.lua -R {temp_file_rules.name} -q -r {temp_file_pcap.name} -A alert_talos'],
                         capture_output=True,
                         text=True,
                         encoding="utf-8",
@@ -96,9 +96,9 @@ def analyze_pcap_detailed(pcap_file: UploadFile, rules_file: UploadFile, packet_
     conf_path = '/code/snort-engine/src/configuration/snort_config_files'
 
     if packet_data is False:
-        cmd = f'snort -c {conf_path}/snort_default_conf.lua -R {temp_file_rules.name} -r {temp_file_pcap.name} -A alert_talos'
+        cmd = f'snort -c {conf_path}/default_snort.lua -R {temp_file_rules.name} -r {temp_file_pcap.name} -A alert_talos'
     if packet_data is True:
-        cmd = f'snort -c {conf_path}/snort_default_conf.lua -R {temp_file_rules.name} -r {temp_file_pcap.name} -A cmg'
+        cmd = f'snort -c {conf_path}/default_snort.lua -R {temp_file_rules.name} -r {temp_file_pcap.name} -A cmg'
     
     result = subprocess.run([cmd],
                         capture_output=True,
